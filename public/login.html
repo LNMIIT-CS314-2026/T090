@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Log in · ResearchPulse</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="login-wrap">
+    <div class="box login-card">
+      <h1>ResearchPulse</h1>
+      <p class="subline">Research impact tracking — LNMIIT</p>
+      <div id="flash-area"></div>
+      <form id="login-form" novalidate>
+        <div class="field">
+          <label for="email">E-mail</label>
+          <input id="email" name="email" type="email" autocomplete="username" required>
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" id="login-btn">Log in</button>
+      </form>
+    </div>
+
+    <div class="demo">
+      <h2>Demo accounts</h2>
+      <div class="table-wrap">
+        <table class="data">
+          <thead><tr><th>Name</th><th>Role</th><th>E-mail</th></tr></thead>
+          <tbody id="demo-accounts"></tbody>
+        </table>
+      </div>
+      <p class="note">The password is <strong>demo123</strong> for all accounts. Click a row to fill in the form.</p>
+    </div>
+  </div>
+  <footer class="footer"><div class="footer-inner">ResearchPulse · CS314 Software Development Laboratory · Team T090 · Prototype</div></footer>
+  <script type="module" src="/login.js"></script>
+</body>
+</html>

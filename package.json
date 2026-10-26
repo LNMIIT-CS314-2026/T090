@@ -1,0 +1,21 @@
+{
+  "name": "researchpulse",
+  "version": "0.1.0",
+  "description": "ResearchPulse prototype: research impact dashboard (CS314, Team T090)",
+  "private": true,
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "reset": "node src/db/seed.js --reset",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^13.0.3",
+    "cookie-parser": "^1.4.7",
+    "express": "^4.21.2"
+  }
+}
