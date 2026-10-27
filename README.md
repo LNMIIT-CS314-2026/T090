@@ -47,21 +47,6 @@ The password is **`demo123`** for every account. On the login page, clicking a r
 | Dr. Arjun Bhatt | Researcher (CSE) | arjun.bhatt@lnmiit.ac.in | Owner checks: cannot see or edit Dr. Sourabh's records |
 | Dr. Ritu Saxena | Researcher (MTH), **deactivated** | ritu.saxena@lnmiit.ac.in | Deactivated account cannot log in (BR-009) |
 
-## Viva demo script
-
-Run `npm run reset` and restart the server before the demo.
-
-1. **Log in as Dr. Sourabh.** The dashboard (W01) shows 25 citations, h-index 2 and i10-index 2, the verified-per-year chart, and six records covering every status. *(FR-001, FR-028, AC-11, AC-12)*
-2. **Open Impact Metrics** (W06). The ranked table of verified records explains "14 ≥ 1, 11 ≥ 2 → h-index = 2", and the page shows "triggered by verification of P-1042". *(FR-023–FR-026, BR-004, NFR-020)*
-3. **Click + Add Publication and save with empty fields.** You get the summary "Please correct 4 fields. Nothing has been saved yet.", a red message under each field, and the values you typed are kept. Enter year 2030 → "Enter a year between 1900 and 2026." *(FR-011, FR-015, AC-02, NFR-008)*
-4. **Add "Graph-Based Citation Analysis", 2025.** The duplicate dialog lists P-1042 and P-1110. Choose **Edit details**, change the title, and save → "P-1120 saved as draft (DRAFT_ENTERED)." → **Submit for verification** → "P-1120 submitted for verification. Research administrators have been notified." *(FR-016, BR-008, AC-03, AC-04, AC-05, FR-017, FR-039)*
-5. **Open P-1088 → View reason** (W05). The rejection reason is shown exactly as the administrator entered it. **Correct and resubmit** opens the form with the info box. Change the DOI, save → DRAFT_ENTERED → Submit. *(FR-020, FR-022, FR-037, T11)*
-6. **Log out and log in as Prayag Vijay.** The bell shows the unread count, and the queue (W03) is ordered oldest first with P-1110 flagged "Possible duplicate". *(FR-021, AC-07, FR-039, BR-005)*
-7. **Review P-1110** (W04). The duplicate check shows "Matches verified record P-1042". **Verify** → "Cannot verify: a VERIFIED record of the same researcher has the same DOI / title and year. Reject this record as a duplicate." Enter the reason "Duplicate of P-1042" → **Reject**. *(BR-008, FR-019, FR-020, BR-010)*
-8. **Review P-1095.** **Reject** with an empty reason → "A rejection reason is required." (no request is sent; the server would also refuse it). **Verify** → confirm → "P-1095 verified. Metrics recomputed: 27 citations, h-index 2, i10-index 2. Researcher notified." *(FR-018, FR-027, AC-08, AC-09, AC-10, T10)*
-9. **Log in as Dr. Sourabh.** The bell shows the new notifications, and the dashboard and Impact Metrics show 27 citations, "triggered by verification of P-1095". *(FR-037, AC-13, NFR-020)*
-10. **Access control.** As Dr. Sourabh, open http://localhost:3000/admin/queue → "You do not have permission to verify publication data." Log in as **Dr. Ritu Saxena** → "This account has been deactivated. Contact the research office." Log in as **Lakshya Singhal** → HoD home with CSE totals only. *(FR-005, BR-005, BR-009, BR-006, NFR-004, NFR-005)*
-11. **Open `data/mail.log`.** It contains the simulated e-mails sent to administrators and to the researcher, and the server console prints one `[MAIL] to=… subject="…"` line per e-mail. *(UC-015, FR-037, FR-039)*
 
 ## Traceability (SRS → prototype)
 
