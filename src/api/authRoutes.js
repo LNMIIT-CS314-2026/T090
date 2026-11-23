@@ -1,11 +1,14 @@
 'use strict';
 const express = require('express');
 const { makeRequireSession, COOKIE_NAME } = require('./requireSession');
+const { ROLES } = require('../domain/users');
 
 const HOME = {
   RESEARCHER: '/researcher/dashboard',
   RESEARCH_ADMIN: '/admin/queue',
-  HOD: '/hod/home',
+  HOD: '/dashboards/department',
+  INSTITUTE_MGMT: '/dashboards/institute',
+  SYSTEM_ADMIN: '/sysadmin/users',
 };
 
 function publicUser(u) {
@@ -38,7 +41,7 @@ function authRoutes(services) {
   });
 
   router.get('/me', requireSession, (req, res) => {
-    const user = services.auth.authorize(req.session, ['RESEARCHER', 'RESEARCH_ADMIN', 'HOD']);
+    const user = services.auth.authorize(req.session, ROLES);
     res.json({ user: publicUser(user), home: HOME[user.role], unreadCount: services.notifier.unreadCount(req.session) });
   });
 

@@ -95,6 +95,7 @@ function shortSubject(n) {
   const id = n.publicId || 'A publication';
   if (n.type === 'NEW_RECORD_PENDING') return `${id} is waiting for verification`;
   if (n.type === 'PUBLICATION_VERIFIED') return `${id} was verified`;
+  if (n.type === 'MILESTONE') return 'new research milestone';
   return `${id} was rejected`;
 }
 

@@ -29,22 +29,27 @@ class PublicationManager {
       if (dups.length > 0 && !confirmDuplicate) {
         return { result: 'DUPLICATE_WARNING', duplicates: dups.map(duplicateSummary) };
       }
-      assertTransition(NEW, S.DRAFT_ENTERED); // T2
-      const at = now();
-      const id = this.publications.insert({
-        publicId: this.publications.nextPublicId(),
-        ownerId: session.userId,
-        ...d,
-        normalizedTitle: normalizeTitle(d.title),
-        normalizedDoi: normalizeDoi(d.doiLink),
-        status: S.DRAFT_ENTERED,
-        duplicateFlag: dups.length > 0,
-        createdAt: at,
-        updatedAt: at,
-      });
-      this.publications.insertHistory(id, null, S.DRAFT_ENTERED, session.userId, at);
-      return { result: 'SAVED', publication: this.publications.findById(id) };
+      return { result: 'SAVED', publication: this.createDraft(session.userId, d, dups.length > 0) };
     });
+  }
+
+  /** T2: stores validated data as a new DRAFT_ENTERED record. Used by addPublication and the CSV import. */
+  createDraft(ownerId, d, duplicateFlag) {
+    assertTransition(NEW, S.DRAFT_ENTERED);
+    const at = now();
+    const id = this.publications.insert({
+      publicId: this.publications.nextPublicId(),
+      ownerId,
+      ...d,
+      normalizedTitle: normalizeTitle(d.title),
+      normalizedDoi: normalizeDoi(d.doiLink),
+      status: S.DRAFT_ENTERED,
+      duplicateFlag,
+      createdAt: at,
+      updatedAt: at,
+    });
+    this.publications.insertHistory(id, null, S.DRAFT_ENTERED, ownerId, at);
+    return this.publications.findById(id);
   }
 
   /** Edit a DRAFT_ENTERED record (T4) or correct a REJECTED one (T11, FR-022). Optimistic locking on version. */

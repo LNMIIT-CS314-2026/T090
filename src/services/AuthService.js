@@ -30,6 +30,11 @@ class AuthService {
     if (token) this.sessions.delete(token);
   }
 
+  /** Ends every session of one user, e.g. after a role change or deactivation (FR-004, FR-009). */
+  endSessionsFor(userId) {
+    for (const [token, s] of this.sessions) if (s.userId === userId) this.sessions.delete(token);
+  }
+
   authenticate(token) {
     const session = token ? this.sessions.get(token) : null;
     if (!session) throw new AppError('UNAUTHENTICATED', MESSAGES.SESSION_EXPIRED);

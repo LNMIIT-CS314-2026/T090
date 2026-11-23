@@ -52,7 +52,8 @@ p { margin: 0 0 8px; }
   display: inline-block; min-width: 18px; padding: 0 6px; border-radius: 9px;
   background: #e2e5e9; color: var(--text); font-size: 11px; font-weight: 600; line-height: 18px; text-align: center;
 }
-.user-label { color: var(--muted); white-space: nowrap; }
+.user-label { color: var(--muted); white-space: nowrap; text-decoration: none; }
+a.user-label:hover { color: var(--text); text-decoration: underline; }
 
 /* ---------- page ---------- */
 main.container { flex: 1; width: 100%; max-width: 1120px; margin: 0 auto; padding: 24px; }
@@ -236,4 +237,29 @@ dialog.modal::backdrop { background: rgba(20, 24, 30, .35); }
   .form-grid { grid-template-columns: 1fr; }
   .toolbar .filters input[type="search"] { width: 100%; }
   .toolbar .filters { width: 100%; }
+}
+
+/* ---------- second increment: dashboards, import, reports, users ---------- */
+.inline-field { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); }
+.filter-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 4px 0 16px; }
+.hbar { display: inline-block; width: 80px; height: 8px; background: #eef0f3; border-radius: 2px; vertical-align: middle; margin-left: 8px; }
+.hbar > span { display: block; height: 100%; background: var(--primary); border-radius: 2px; opacity: .55; }
+.check-list { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 6px 0 12px; }
+.check-list label { display: inline-flex; gap: 6px; align-items: center; font-size: 13px; }
+.row-ok { color: var(--success-text); }
+.row-dup { color: var(--warn-text); }
+.row-bad { color: var(--danger); }
+tr.total td { font-weight: 600; background: #f7f8fa; }
+.report-meta { display: grid; grid-template-columns: max-content 1fr; gap: 2px 16px; margin: 0 0 16px; font-size: 13px; }
+.report-meta dt { color: var(--muted); }
+.report-meta dd { margin: 0; }
+textarea { font: inherit; }
+@media print {
+  .topbar, .footer, .no-print, #flash-area, .breadcrumb { display: none !important; }
+  body { background: #fff; }
+  .container { max-width: none; padding: 0; }
+  .box, .table-wrap { border: none; overflow: visible; }
+  table.data { font-size: 11px; }
+  table.data th, table.data td { padding: 4px 6px; }
+  a { color: inherit; text-decoration: none; }
 }

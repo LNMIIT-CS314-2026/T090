@@ -1,6 +1,7 @@
 'use strict';
 const { AppError, MESSAGES } = require('../domain/errors');
 const { PublicationStatus: S, assertTransition } = require('../domain/PublicationStatus');
+const { milestones } = require('../domain/metrics');
 
 const ADMIN = 'RESEARCH_ADMIN';
 const now = () => new Date().toISOString();
@@ -84,6 +85,10 @@ class VerificationManager {
       if (decision === S.VERIFIED) metrics = this.metrics.recompute(p.ownerId, p.publicId, at); // UC-006 «include» UC-008
 
       if (decision === S.VERIFIED) {
+        // Milestones first, so the verification outcome is the newest notification (FR-038, FR-037).
+        for (const text of milestones(metrics.previous, metrics)) {
+          this.notifier.notifyResearcher(p.ownerId, 'MILESTONE', `${text} (after ${p.publicId} was verified)`, p.id);
+        }
         this.notifier.notifyResearcher(p.ownerId, 'PUBLICATION_VERIFIED', `${p.publicId} '${p.title}' was verified by ${admin.name}.`, p.id);
       } else {
         this.notifier.notifyResearcher(p.ownerId, 'PUBLICATION_REJECTED', `${p.publicId} '${p.title}' was rejected: ${clean}`, p.id);

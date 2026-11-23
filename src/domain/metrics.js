@@ -32,4 +32,34 @@ function trendByYear(pubs, currentYear = new Date().getFullYear()) {
   return trend;
 }
 
-module.exports = { totalCitations, hIndex, i10Index, trendByYear };
+/** Totals for any group of verified publications (a researcher, a department, the institute). */
+function summarize(pubs) {
+  const citations = pubs.map((p) => Math.max(0, p.citationCount));
+  const byType = {};
+  for (const p of pubs) byType[p.publicationType] = (byType[p.publicationType] || 0) + 1;
+  return {
+    publications: pubs.length,
+    citations: totalCitations(citations),
+    hIndex: hIndex(citations),
+    i10Index: i10Index(citations),
+    byType,
+  };
+}
+
+const CITATION_MILESTONES = [50, 100, 250, 500, 1000, 2500, 5000, 10000];
+
+/**
+ * Research milestones reached by a recomputation (FR-038): h-index or i10-index went up, or total
+ * citations passed one of CITATION_MILESTONES. Returns plain sentences for the researcher.
+ */
+function milestones(prev, next) {
+  const p = prev || { totalCitations: 0, hIndex: 0, i10Index: 0 };
+  const out = [];
+  if (next.hIndex > p.hIndex) out.push(`Your h-index rose from ${p.hIndex} to ${next.hIndex}.`);
+  if (next.i10Index > p.i10Index) out.push(`Your i10-index rose from ${p.i10Index} to ${next.i10Index}.`);
+  const passed = CITATION_MILESTONES.filter((m) => p.totalCitations < m && next.totalCitations >= m);
+  if (passed.length) out.push(`Your verified publications have reached ${passed[passed.length - 1]} citations.`);
+  return out;
+}
+
+module.exports = { totalCitations, hIndex, i10Index, trendByYear, summarize, milestones, CITATION_MILESTONES };

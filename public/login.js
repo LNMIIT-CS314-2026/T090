@@ -9,6 +9,8 @@ const DEMO = [
   ['Dr. Neha Kulkarni', 'Researcher (ECE)', 'neha.kulkarni@lnmiit.ac.in'],
   ['Dr. Arjun Bhatt', 'Researcher (CSE)', 'arjun.bhatt@lnmiit.ac.in'],
   ['Dr. Ritu Saxena', 'Researcher (MTH), deactivated', 'ritu.saxena@lnmiit.ac.in'],
+  ['Dr. Meenakshi Rao', 'Institute Management (Dean, R&D)', 'meenakshi.rao@lnmiit.ac.in'],
+  ['Vikram Joshi', 'System Administrator', 'vikram.joshi@lnmiit.ac.in'],
 ];
 
 const form = document.getElementById('login-form');

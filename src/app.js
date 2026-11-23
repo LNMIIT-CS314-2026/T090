@@ -9,6 +9,8 @@ const { publicationRoutes } = require('./api/publicationRoutes');
 const { verificationRoutes } = require('./api/verificationRoutes');
 const { dashboardRoutes } = require('./api/dashboardRoutes');
 const { notificationRoutes } = require('./api/notificationRoutes');
+const { userRoutes } = require('./api/userRoutes');
+const { reportRoutes } = require('./api/reportRoutes');
 const { makeRequireSession, COOKIE_NAME } = require('./api/requireSession');
 const { errorHandler } = require('./api/errorHandler');
 
@@ -27,7 +29,14 @@ const PAGES = {
   '/admin/queue': 'admin/queue.html',
   '/admin/publications/:id': 'admin/review.html',
   '/admin/notifications': 'admin/notifications.html',
-  '/hod/home': 'hod/home.html',
+  '/researcher/import': 'researcher/import.html',
+  '/profile': 'profile.html',
+  '/dashboards/department': 'dashboards/department.html',
+  '/dashboards/institute': 'dashboards/institute.html',
+  '/dashboards/compare': 'dashboards/compare.html',
+  '/reports': 'reports/list.html',
+  '/reports/:id(\\d+)': 'reports/view.html', // numeric only, so /reports/list.js stays a static file
+  '/sysadmin/users': 'sysadmin/users.html',
 };
 
 /** createApp(db) → express app. Used by server.js and by the API tests. */
@@ -37,7 +46,7 @@ function createApp(db, opts = {}) {
   app.disable('x-powered-by');
   app.locals.services = services;
 
-  app.use(express.json({ limit: '100kb' }));
+  app.use(express.json({ limit: '1mb' })); // a CSV import of up to 500 rows is sent as JSON text
   app.use(cookieParser());
 
   // --- L2 request handling ---
@@ -47,6 +56,8 @@ function createApp(db, opts = {}) {
   app.use('/api', verificationRoutes(services));
   app.use('/api', dashboardRoutes(services));
   app.use('/api', notificationRoutes(services));
+  app.use('/api', userRoutes(services));
+  app.use('/api', reportRoutes(services));
   app.use('/api', (req, res, next) => next(new AppError('NOT_FOUND', 'Not found.')));
 
   // --- L1 pages ---
@@ -58,6 +69,7 @@ function createApp(db, opts = {}) {
       return res.redirect('/login');
     }
   });
+  app.get('/hod/home', (req, res) => res.redirect('/dashboards/department')); // first-increment URL
   for (const [route, file] of Object.entries(PAGES)) {
     app.get(route, (req, res) => res.sendFile(path.join(PUBLIC_DIR, file)));
   }

@@ -35,7 +35,9 @@ export async function mountNotificationsPage({ role, recordHref }) {
         ${list.map((n) => `<li class="${n.readStatus === 'UNREAD' ? 'unread' : ''}">
             <div class="msg">${n.readStatus === 'UNREAD' ? '<span class="label-new">New</span>' : ''}${escapeHtml(n.message)}</div>
             <div class="meta">${escapeHtml(fmtDateTime(n.createdAt))}
-              ${n.publicationId ? ` · <a href="${recordHref(n)}" data-id="${n.id}" data-unread="${n.readStatus === 'UNREAD' ? 1 : 0}">Open ${escapeHtml(n.publicId || 'record')}</a>` : ' · <span class="muted">record deleted</span>'}
+              ${n.type === 'MILESTONE'
+                ? ` · <a href="/researcher/metrics" data-id="${n.id}" data-unread="${n.readStatus === 'UNREAD' ? 1 : 0}">Open impact metrics</a>`
+                : n.publicationId ? ` · <a href="${recordHref(n)}" data-id="${n.id}" data-unread="${n.readStatus === 'UNREAD' ? 1 : 0}">Open ${escapeHtml(n.publicId || 'record')}</a>` : ' · <span class="muted">record deleted</span>'}
             </div>
           </li>`).join('')}
       </ul></div>`;

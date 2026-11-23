@@ -12,9 +12,24 @@ function dashboardRoutes(services) {
     res.json(ds.getIndividualView(req.session, raw === 'me' ? 'me' : Number(raw)));
   });
 
-  // HoD home summary of the HoD's own department (read-only, BR-006).
+  // Summary of the HoD's own department (read-only, BR-006).
   router.get('/dashboards/department', (req, res) => {
     res.json(ds.getDepartmentSummary(req.session));
+  });
+
+  // FR-029 department dashboard (':id' or 'mine'), FR-030 institute dashboard, FR-031 comparison; FR-033 filters.
+  router.get('/dashboards/department/:id', (req, res) => {
+    const raw = req.params.id;
+    if (raw !== 'mine' && !/^\d+$/.test(raw)) throw new AppError('NOT_FOUND', MESSAGES.DEPARTMENT_NOT_FOUND);
+    res.json(ds.getDepartmentView(req.session, raw === 'mine' ? 'mine' : Number(raw), req.query));
+  });
+
+  router.get('/dashboards/institute', (req, res) => {
+    res.json(ds.getInstituteView(req.session, req.query));
+  });
+
+  router.get('/dashboards/compare', (req, res) => {
+    res.json(ds.getComparison(req.session, req.query));
   });
 
   router.get('/departments', (req, res) => {

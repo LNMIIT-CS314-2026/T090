@@ -35,6 +35,16 @@ function publicationRoutes(services) {
     sendResult(res, result, 201);
   });
 
+  // UC-005 bulk import (FR-014, FR-015): preview checks the file, import saves the valid rows.
+  router.post('/publications/import/preview', (req, res) => {
+    res.json(services.importer.preview(req.session, (req.body || {}).csv));
+  });
+
+  router.post('/publications/import', (req, res) => {
+    const body = req.body || {};
+    res.status(201).json(services.importer.import(req.session, body.csv, body.includeDuplicates === true));
+  });
+
   router.get('/publications/:id', (req, res) => {
     res.json({ publication: pm.getPublication(req.session, parseId(req.params.id)) });
   });

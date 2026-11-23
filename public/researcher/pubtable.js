@@ -6,7 +6,10 @@ import { showFlash, renderApiFailure, confirmDialog } from '/js/layout.js';
 export function mountPublicationList(container) {
   container.innerHTML = `
     <div class="toolbar">
-      <a class="btn btn-primary" href="/researcher/publications/new">+ Add Publication</a>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="/researcher/publications/new">+ Add Publication</a>
+        <a class="btn" href="/researcher/import">Import CSV</a>
+      </div>
       <form class="filters" id="pub-filter" role="search">
         <input type="search" id="pub-search" placeholder="Search title / author / year…" aria-label="Search publications">
         <select id="pub-status" aria-label="Status">

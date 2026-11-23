@@ -1,5 +1,7 @@
 -- ResearchPulse schema (instruction.md section 2, SRS section 40.6).
 -- Timestamps are ISO-8601 text in UTC.
+-- Schema version 2 (second increment): INSTITUTE_MGMT / SYSTEM_ADMIN roles, profile fields,
+-- MILESTONE notifications and the reports table. connection.js rebuilds an older demo database.
 
 CREATE TABLE IF NOT EXISTS departments (
   department_id INTEGER PRIMARY KEY,
@@ -13,10 +15,12 @@ CREATE TABLE IF NOT EXISTS users (
   name TEXT NOT NULL,
   email TEXT NOT NULL UNIQUE,
   password_hash TEXT NOT NULL,
-  role TEXT NOT NULL CHECK (role IN ('RESEARCHER','RESEARCH_ADMIN','HOD')),
+  role TEXT NOT NULL CHECK (role IN ('RESEARCHER','RESEARCH_ADMIN','HOD','INSTITUTE_MGMT','SYSTEM_ADMIN')),
   account_status TEXT NOT NULL DEFAULT 'ACTIVE' CHECK (account_status IN ('ACTIVE','DEACTIVATED')),
   department_id INTEGER REFERENCES departments(department_id),
-  designation TEXT
+  designation TEXT,
+  research_areas TEXT,                     -- researcher profile (FR-006, FR-007)
+  phone TEXT
 );
 
 CREATE TABLE IF NOT EXISTS publications (
@@ -77,7 +81,7 @@ CREATE TABLE IF NOT EXISTS impact_metrics (
 CREATE TABLE IF NOT EXISTS notifications (
   notification_id INTEGER PRIMARY KEY,
   recipient_id INTEGER NOT NULL REFERENCES users(user_id),
-  type TEXT NOT NULL CHECK (type IN ('NEW_RECORD_PENDING','PUBLICATION_VERIFIED','PUBLICATION_REJECTED')),
+  type TEXT NOT NULL CHECK (type IN ('NEW_RECORD_PENDING','PUBLICATION_VERIFIED','PUBLICATION_REJECTED','MILESTONE')),
   message TEXT NOT NULL,
   publication_id INTEGER REFERENCES publications(publication_id) ON DELETE SET NULL,
   read_status TEXT NOT NULL DEFAULT 'UNREAD' CHECK (read_status IN ('UNREAD','READ')),
@@ -88,11 +92,25 @@ CREATE TABLE IF NOT EXISTS notifications (
 
 CREATE TABLE IF NOT EXISTS audit_logs (     -- insert-only (BR-010)
   log_id INTEGER PRIMARY KEY,
-  action TEXT NOT NULL,                     -- 'VERIFY' | 'REJECT'
+  action TEXT NOT NULL,                     -- VERIFY, REJECT, CREATE_USER, CHANGE_ROLE, DEACTIVATE, ACTIVATE, GENERATE_REPORT
   actor_id INTEGER NOT NULL REFERENCES users(user_id),
-  target_id TEXT NOT NULL,                  -- public_id, plain value (survives deletion)
+  target_id TEXT NOT NULL,                  -- P-…, U-… or R-…, plain value (survives deletion)
   details TEXT,
   at TEXT NOT NULL
+);
+
+-- Generated reports (FR-034, FR-035). content is a JSON snapshot, so a report reads the same later.
+CREATE TABLE IF NOT EXISTS reports (
+  report_id INTEGER PRIMARY KEY,
+  public_id TEXT NOT NULL UNIQUE,          -- 'R-0001'
+  type TEXT NOT NULL CHECK (type IN ('ACCREDITATION','DEPARTMENT')),
+  generated_by INTEGER NOT NULL REFERENCES users(user_id),
+  department_id INTEGER REFERENCES departments(department_id),  -- NULL = whole institute
+  year_from INTEGER NOT NULL,
+  year_to INTEGER NOT NULL,
+  status TEXT NOT NULL DEFAULT 'GENERATED' CHECK (status IN ('GENERATED')),
+  generated_at TEXT NOT NULL,
+  content TEXT NOT NULL
 );
 
 -- Counter for public IDs, so a deleted P-number is never handed out again.

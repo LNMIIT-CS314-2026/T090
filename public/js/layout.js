@@ -11,9 +11,24 @@ const MENUS = {
   ],
   RESEARCH_ADMIN: [
     ['queue', 'Verification Queue', '/admin/queue'],
+    ['institute', 'Institute', '/dashboards/institute'],
+    ['department', 'Departments', '/dashboards/department'],
+    ['compare', 'Compare', '/dashboards/compare'],
+    ['reports', 'Reports', '/reports'],
     ['notifications', 'Notifications', '/admin/notifications'],
   ],
-  HOD: [['home', 'Home', '/hod/home']],
+  HOD: [
+    ['department', 'My Department', '/dashboards/department'],
+    ['compare', 'Compare', '/dashboards/compare'],
+    ['reports', 'Reports', '/reports'],
+  ],
+  INSTITUTE_MGMT: [
+    ['institute', 'Institute', '/dashboards/institute'],
+    ['department', 'Departments', '/dashboards/department'],
+    ['compare', 'Compare', '/dashboards/compare'],
+    ['reports', 'Reports', '/reports'],
+  ],
+  SYSTEM_ADMIN: [['users', 'Users', '/sysadmin/users']],
 };
 const NOTIFICATION_PAGE = { RESEARCHER: '/researcher/notifications', RESEARCH_ADMIN: '/admin/notifications' };
 
@@ -83,7 +98,7 @@ function renderTopbar(me, active) {
   const notifHref = NOTIFICATION_PAGE[me.user.role];
   els.right.innerHTML = `
     ${notifHref ? `<a class="bell" href="${notifHref}" title="Notifications" aria-label="Notifications">${BELL_SVG}<span id="unread-pill"></span></a>` : ''}
-    <span class="user-label">${escapeHtml(me.user.name)} · ${escapeHtml(roleLabel(me.user.role))}</span>
+    <a class="user-label" href="/profile" title="My profile">${escapeHtml(me.user.name)} · ${escapeHtml(roleLabel(me.user.role))}</a>
     <button type="button" class="btn btn-sm" id="logout-btn">Logout</button>`;
   setUnread(me.unreadCount);
   document.getElementById('logout-btn').addEventListener('click', async () => {

@@ -7,7 +7,9 @@
   "scripts": {
     "start": "node src/server.js",
     "reset": "node src/db/seed.js --reset",
-    "test": "node --test"
+    "test": "node --test",
+    "test:a8": "node --test tests/a8.test.js",
+    "test:ui": "node tests/ui-run.js"
   },
   "engines": {
     "node": ">=20"

@@ -196,6 +196,24 @@ class PublicationRepository {
       .map(toPublication);
   }
 
+  /**
+   * Verified publications for dashboards and reports (FR-029 – FR-035), filtered by department,
+   * owner and publication year range. Ordered by department, owner and year.
+   */
+  findVerified({ departmentId = null, ownerIds = null, yearFrom = null, yearTo = null } = {}) {
+    const where = ["p.status = 'VERIFIED'"];
+    const params = {};
+    if (departmentId) { where.push('u.department_id = @departmentId'); params.departmentId = departmentId; }
+    if (yearFrom) { where.push('p.year >= @yearFrom'); params.yearFrom = yearFrom; }
+    if (yearTo) { where.push('p.year <= @yearTo'); params.yearTo = yearTo; }
+    let rows = this.db
+      .prepare(`${PUB_SELECT} WHERE ${where.join(' AND ')} ORDER BY d.code, u.name, p.year DESC, p.public_id`)
+      .all(params)
+      .map(toPublication);
+    if (ownerIds) rows = rows.filter((p) => ownerIds.includes(p.ownerId));
+    return rows;
+  }
+
   insertHistory(publicationId, fromStatus, toStatus, actorId, at) {
     this.db
       .prepare('INSERT INTO status_history (publication_id, from_status, to_status, actor_id, at) VALUES (?, ?, ?, ?, ?)')

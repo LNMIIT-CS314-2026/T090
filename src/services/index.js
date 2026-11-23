@@ -7,6 +7,7 @@ const { VerificationRepository } = require('../repositories/VerificationReposito
 const { MetricRepository } = require('../repositories/MetricRepository');
 const { NotificationRepository } = require('../repositories/NotificationRepository');
 const { AuditRepository } = require('../repositories/AuditRepository');
+const { ReportRepository } = require('../repositories/ReportRepository');
 const { AuthService } = require('./AuthService');
 const { UserDirectoryService } = require('./UserDirectoryService');
 const { DuplicateDetector } = require('./DuplicateDetector');
@@ -16,6 +17,9 @@ const { MetricCalculator } = require('./MetricCalculator');
 const { DashboardService } = require('./DashboardService');
 const { NotificationService } = require('./NotificationService');
 const { AuditService } = require('./AuditService');
+const { PublicationImporter } = require('./PublicationImporter');
+const { UserManagementService } = require('./UserManagementService');
+const { ReportService } = require('./ReportService');
 
 const DEFAULT_MAIL_LOG = path.join(__dirname, '..', '..', 'data', 'mail.log');
 
@@ -28,6 +32,7 @@ function buildServices(db, opts = {}) {
   const metricRepo = new MetricRepository(db);
   const notificationRepo = new NotificationRepository(db);
   const auditRepo = new AuditRepository(db);
+  const reportRepo = new ReportRepository(db);
 
   const users = new UserDirectoryService({ userRepo });
   const auth = new AuthService({ users });
@@ -43,11 +48,14 @@ function buildServices(db, opts = {}) {
   });
   const publicationManager = new PublicationManager({ uow, publications, verifications, detector, auth, users, notifier });
   const verificationManager = new VerificationManager({ uow, publications, verifications, detector, auth, audit, metrics, notifier });
-  const dashboards = new DashboardService({ publications, metricRepo, users, auth });
+  const dashboards = new DashboardService({ publications, metricRepo, users, auth, userRepo });
+  const importer = new PublicationImporter({ uow, auth, detector, manager: publicationManager });
+  const accounts = new UserManagementService({ uow, userRepo, auth, audit });
+  const reports = new ReportService({ uow, reportRepo, dashboards, auth, audit, userRepo });
 
   return {
     uow,
-    repos: { userRepo, publications, verifications, metricRepo, notificationRepo, auditRepo },
+    repos: { userRepo, publications, verifications, metricRepo, notificationRepo, auditRepo, reportRepo },
     auth,
     users,
     audit,
@@ -57,6 +65,9 @@ function buildServices(db, opts = {}) {
     publications: publicationManager,
     verification: verificationManager,
     dashboards,
+    importer,
+    accounts,
+    reports,
   };
 }
 

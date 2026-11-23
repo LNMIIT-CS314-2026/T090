@@ -33,7 +33,7 @@ function isSeeded(db) {
 
 function clearAll(db) {
   db.transaction(() => {
-    for (const t of ['audit_logs', 'notifications', 'impact_metrics', 'status_history', 'verifications', 'publications']) {
+    for (const t of ['reports', 'audit_logs', 'notifications', 'impact_metrics', 'status_history', 'verifications', 'publications']) {
       db.prepare(`DELETE FROM ${t}`).run();
     }
     db.prepare('UPDATE departments SET head_user_id = NULL').run();
@@ -69,8 +69,21 @@ function seed(db) {
     const neha = u('Dr. Neha Kulkarni', 'neha.kulkarni@lnmiit.ac.in', 'RESEARCHER', ECE, 'Assistant Professor');
     const arjun = u('Dr. Arjun Bhatt', 'arjun.bhatt@lnmiit.ac.in', 'RESEARCHER', CSE, 'Assistant Professor');
     const ritu = u('Dr. Ritu Saxena', 'ritu.saxena@lnmiit.ac.in', 'RESEARCHER', MTH, 'Associate Professor', 'DEACTIVATED');
+    // Second increment: institute-level roles (FR-030, FR-034, FR-004, FR-009).
+    u('Dr. Meenakshi Rao', 'meenakshi.rao@lnmiit.ac.in', 'INSTITUTE_MGMT', null, 'Dean, Research & Development');
+    u('Vikram Joshi', 'vikram.joshi@lnmiit.ac.in', 'SYSTEM_ADMIN', null, 'IT Services');
     users.setDepartmentHead(CSE, lakshya);
     users.setDepartmentHead(ECE, kartik);
+
+    // Researcher profiles (FR-006, FR-007).
+    const profile = (id, researchAreas, phone) => {
+      const r = users.findById(id);
+      users.updateProfile(id, { name: r.name, designation: r.designation, researchAreas, phone });
+    };
+    profile(sourabh, 'Bibliometrics, scholarly data pipelines, citation analysis', '+91 141 2688 101');
+    profile(arjun, 'Edge computing, recommender systems, information retrieval', '+91 141 2688 117');
+    profile(neha, 'RF circuit design, antennas, 5G receivers', '+91 141 2688 214');
+    profile(ritu, 'Spectral graph theory', null);
 
     pubs.initSequence(LAST_SEEDED_NUMBER);
 

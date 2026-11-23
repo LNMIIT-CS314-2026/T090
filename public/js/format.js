@@ -47,12 +47,25 @@ export const TYPE_LABELS = {
   JOURNAL: 'Journal article', CONFERENCE: 'Conference paper', BOOK_CHAPTER: 'Book chapter', BOOK: 'Book', PATENT: 'Patent', OTHER: 'Other',
 };
 
-const ROLE_LABELS = { RESEARCHER: 'Researcher', RESEARCH_ADMIN: 'Research Administrator', HOD: 'Head of Department' };
+const ROLE_LABELS = {
+  RESEARCHER: 'Researcher',
+  RESEARCH_ADMIN: 'Research Administrator',
+  HOD: 'Head of Department',
+  INSTITUTE_MGMT: 'Institute Management',
+  SYSTEM_ADMIN: 'System Administrator',
+};
+export const ROLES = Object.keys(ROLE_LABELS);
 export function roleLabel(role) {
   return ROLE_LABELS[role] || role;
 }
 
-const HOMES = { RESEARCHER: '/researcher/dashboard', RESEARCH_ADMIN: '/admin/queue', HOD: '/hod/home' };
+const HOMES = {
+  RESEARCHER: '/researcher/dashboard',
+  RESEARCH_ADMIN: '/admin/queue',
+  HOD: '/dashboards/department',
+  INSTITUTE_MGMT: '/dashboards/institute',
+  SYSTEM_ADMIN: '/sysadmin/users',
+};
 export function homeFor(role) {
   return HOMES[role] || '/login';
 }

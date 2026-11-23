@@ -78,7 +78,7 @@ if (page) {
             </select>`)}
           ${field('venue', 'Venue / journal', `<input id="f-venue" name="venue" value="${val('venue')}">`)}
           ${field('year', 'Year *', `<input id="f-year" name="year" inputmode="numeric" value="${val('year')}">`)}
-          ${field('citationCount', 'Citation count', `<input id="f-citationCount" name="citationCount" type="number" min="0" step="1" value="${p ? p.citationCount : 0}">`, { hint: 'Blank counts as 0' })}
+          ${field('citationCount', 'Citation count', `<input id="f-citationCount" name="citationCount" inputmode="numeric" autocomplete="off" value="${p ? p.citationCount : 0}">`, { hint: 'Blank counts as 0' })}
           ${field('doiLink', 'DOI / link', `<input id="f-doiLink" name="doiLink" placeholder="10.xxxx/… or https://…" value="${val('doiLink')}">`, { span2: true })}
         </div>
         <div class="form-actions" id="form-actions">
