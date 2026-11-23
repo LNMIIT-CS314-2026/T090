@@ -7,6 +7,7 @@ const DEMO = [
     ['Dr. Arjun Bhatt', 'CSE', 'arjun.bhatt@lnmiit.ac.in'],
     ['Dr. Neha Kulkarni', 'ECE', 'neha.kulkarni@lnmiit.ac.in'],
     ['Dr. Priya Nair', 'CCE', 'priya.nair@lnmiit.ac.in'],
+    ['Dr. Anubhav', 'CCE', 'anubhav@lnmiit.ac.in'],
     ['Dr. Vivek Chauhan', 'ME', 'vivek.chauhan@lnmiit.ac.in'],
     ['Dr. Ritu Saxena', 'MTH, deactivated', 'ritu.saxena@lnmiit.ac.in'],
   ]],

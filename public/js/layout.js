@@ -49,7 +49,10 @@ let currentMe = null;
 export async function initPage({ active, title, subtitle = '', breadcrumb = null, roles = null, forbiddenMessage } = {}) {
   document.body.innerHTML = `
     <header class="topbar"><div class="topbar-inner">
-      <a class="wordmark" href="/">ResearchPulse</a>
+      <a class="brand" href="/" aria-label="ResearchPulse home">
+        <span class="logo-chip"><img src="/img/lnmiit-logo.jpg" alt="LNMIIT" width="75" height="35"></span>
+        <span class="wordmark">ResearchPulse</span>
+      </a>
       <nav class="nav" aria-label="Main menu"></nav>
       <div class="topbar-right"></div>
     </div></header>

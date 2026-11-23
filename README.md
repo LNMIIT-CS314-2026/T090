@@ -49,6 +49,7 @@ Departments: Computer Science & Engineering (CSE), Electronics & Communication E
 | Dr. Arjun Bhatt | Researcher (CSE) | arjun.bhatt@lnmiit.ac.in | Owner checks: cannot see or edit Dr. Sourabh's records |
 | Dr. Ritu Saxena | Researcher (MTH), **deactivated** | ritu.saxena@lnmiit.ac.in | Deactivated account cannot log in (BR-009) |
 | Dr. Priya Nair | Researcher (CCE) | priya.nair@lnmiit.ac.in | Three verified records in Computer & Communication Engineering (32 / 3 / 1) |
+| Dr. Anubhav | Researcher (CCE) | anubhav@lnmiit.ac.in | Three verified records and one draft in CCE (39 / 3 / 2) |
 | Dr. Vivek Chauhan | Researcher (ME) | vivek.chauhan@lnmiit.ac.in | Two verified records in Mechanical Engineering (19 / 2 / 1) |
 | Dr. Anjali Verma | Head of Department (MTH) | anjali.verma@lnmiit.ac.in | Mathematics dashboard only |
 | Dr. Rajesh Khanna | Head of Department (CCE) | rajesh.khanna@lnmiit.ac.in | CCE dashboard only |

@@ -79,9 +79,9 @@ const unique = (over = {}) => ({ ...VALID, doiLink: '', title: `Boundary probe $
 test('TC-01 [EP valid class] valid manual entry is saved as DRAFT_ENTERED', () => {
   const { pm, login, count } = fresh();
   const s = login(EMAILS.sourabh);
-  // A8 ran on 13 seeded records (13 → 14); the second increment added 5 records in CCE and ME.
+  // A8 ran on 13 seeded records (13 → 14); the second increment added 9 records in CCE and ME.
   const before = count('SELECT COUNT(*) AS n FROM publications');
-  assert.equal(before, 18);
+  assert.equal(before, 22);
   const r = pm.addPublication(s, VALID);
   assert.equal(r.result, 'SAVED');
   assert.equal(r.publication.publicId, 'P-1120');

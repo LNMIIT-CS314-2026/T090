@@ -81,6 +81,7 @@ function seed(db) {
     const suresh = u('Dr. Suresh Patil', 'suresh.patil@lnmiit.ac.in', 'HOD', ME, 'Professor and Head');
     const priya = u('Dr. Priya Nair', 'priya.nair@lnmiit.ac.in', 'RESEARCHER', CCE, 'Assistant Professor');
     const vivek = u('Dr. Vivek Chauhan', 'vivek.chauhan@lnmiit.ac.in', 'RESEARCHER', ME, 'Associate Professor');
+    const anubhav = u('Dr. Anubhav', 'anubhav@lnmiit.ac.in', 'RESEARCHER', CCE, 'Assistant Professor');
     users.setDepartmentHead(CSE, lakshya);
     users.setDepartmentHead(ECE, kartik);
     users.setDepartmentHead(MTH, anjali);
@@ -98,6 +99,7 @@ function seed(db) {
     profile(ritu, 'Spectral graph theory', null);
     profile(priya, 'Wireless sensor networks, network security, IoT', '+91 141 2688 305');
     profile(vivek, 'Additive manufacturing, composite materials, finite element analysis', '+91 141 2688 412');
+    profile(anubhav, 'Cloud computing, distributed systems, software-defined networking', '+91 141 2688 318');
 
     pubs.initSequence(LAST_SEEDED_NUMBER);
 
@@ -268,6 +270,31 @@ function seed(db) {
       decision: decide(prayag, 'VERIFIED', 33, 14, 25),
     });
 
+    // --- Dr. Anubhav (CCE) ---
+    pub({
+      publicId: 'P-1015', owner: anubhav, title: 'Latency-Aware Placement of Microservices in Edge Clouds', authors: 'Anubhav, R. Khanna',
+      type: 'JOURNAL', venue: 'IEEE Transactions on Cloud Computing', year: 2023, doi: '10.1109/TCC.2023.1015', citations: 24,
+      created: at(46, 10, 30), submitted: at(45, 9, 0), opened: review(prayag, 44, 14, 0),
+      decision: decide(prayag, 'VERIFIED', 44, 14, 18, 'Details match DOI record'),
+    });
+    pub({
+      publicId: 'P-1047', owner: anubhav, title: 'An SDN Controller for Campus Wi-Fi Load Balancing', authors: 'Anubhav, P. Nair',
+      type: 'CONFERENCE', venue: 'IEEE NetSoft', year: 2024, doi: '10.1109/NetSoft.2024.1047', citations: 12,
+      created: at(38, 11, 0), submitted: at(37, 10, 20), opened: review(pulkit, 36, 12, 5),
+      decision: decide(pulkit, 'VERIFIED', 36, 12, 22),
+    });
+    pub({
+      publicId: 'P-1083', owner: anubhav, title: 'Serverless Workflows for Scientific Data Processing', authors: 'Anubhav, S. Ghosh, K. Rao',
+      type: 'BOOK_CHAPTER', venue: 'Springer — Cloud Computing for Science', year: 2025, citations: 3,
+      created: at(25, 15, 30), submitted: at(24, 9, 45), opened: review(prayag, 22, 11, 30),
+      decision: decide(prayag, 'VERIFIED', 22, 11, 41),
+    });
+    pub({
+      publicId: 'P-1112', owner: anubhav, title: 'Federated Monitoring of Kubernetes Clusters', authors: 'Anubhav, R. Khanna',
+      type: 'CONFERENCE', venue: 'IEEE CLOUD', year: 2026, citations: 0,
+      created: at(4, 16, 0),
+    });
+
     // --- impact metrics, computed with the real recompute(), dated at the triggering verification ---
     calculator.recompute(sourabh, 'P-1042', at(40, 10, 32));
     calculator.recompute(arjun, 'P-1060', at(30, 11, 13));
@@ -275,6 +302,7 @@ function seed(db) {
     calculator.recompute(ritu, 'P-0950', at(38, 10, 7));
     calculator.recompute(priya, 'P-1050', at(26, 15, 13));
     calculator.recompute(vivek, 'P-1036', at(33, 14, 26));
+    calculator.recompute(anubhav, 'P-1083', at(22, 11, 42));
 
     // --- notifications (e-mails already sent) ---
     const note = (recipientId, type, message, publicationId, createdAt, readStatus = 'UNREAD') =>

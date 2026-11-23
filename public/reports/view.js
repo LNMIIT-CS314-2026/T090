@@ -40,6 +40,11 @@ if (page) {
         <a class="btn" href="/api/reports/${r.id}/export.csv">Download CSV</a>
         <a class="btn" href="/reports">Back to reports</a>
       </div>
+      <div class="report-letterhead">
+        <img src="/img/lnmiit-logo.jpg" alt="LNMIIT" width="150" height="70">
+        <div><div class="report-letterhead-title">${escapeHtml(c.title)}</div>
+          <div class="muted">ResearchPulse · ${escapeHtml(r.publicId)}</div></div>
+      </div>
       <dl class="report-meta">
         <dt>Institute</dt><dd>The LNM Institute of Information Technology, Jaipur</dd>
         <dt>Scope</dt><dd>${escapeHtml(c.scope)}</dd>
