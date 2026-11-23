@@ -1,16 +1,30 @@
 import { escapeHtml } from './js/format.js';
 
+// Demo accounts grouped by role: [name, detail, e-mail].
 const DEMO = [
-  ['Dr. Sourabh', 'Researcher (CSE)', 'sourabh@lnmiit.ac.in'],
-  ['Prayag Vijay', 'Research Administrator', 'prayag.vijay@lnmiit.ac.in'],
-  ['Pulkit Mittal', 'Research Administrator', 'pulkit.mittal@lnmiit.ac.in'],
-  ['Lakshya Singhal', 'Head of Department (CSE)', 'lakshya.singhal@lnmiit.ac.in'],
-  ['Kartik Mantri', 'Head of Department (ECE)', 'kartik.mantri@lnmiit.ac.in'],
-  ['Dr. Neha Kulkarni', 'Researcher (ECE)', 'neha.kulkarni@lnmiit.ac.in'],
-  ['Dr. Arjun Bhatt', 'Researcher (CSE)', 'arjun.bhatt@lnmiit.ac.in'],
-  ['Dr. Ritu Saxena', 'Researcher (MTH), deactivated', 'ritu.saxena@lnmiit.ac.in'],
-  ['Dr. Meenakshi Rao', 'Institute Management (Dean, R&D)', 'meenakshi.rao@lnmiit.ac.in'],
-  ['Vikram Joshi', 'System Administrator', 'vikram.joshi@lnmiit.ac.in'],
+  ['Researchers', [
+    ['Dr. Sourabh', 'CSE', 'sourabh@lnmiit.ac.in'],
+    ['Dr. Arjun Bhatt', 'CSE', 'arjun.bhatt@lnmiit.ac.in'],
+    ['Dr. Neha Kulkarni', 'ECE', 'neha.kulkarni@lnmiit.ac.in'],
+    ['Dr. Priya Nair', 'CCE', 'priya.nair@lnmiit.ac.in'],
+    ['Dr. Vivek Chauhan', 'ME', 'vivek.chauhan@lnmiit.ac.in'],
+    ['Dr. Ritu Saxena', 'MTH, deactivated', 'ritu.saxena@lnmiit.ac.in'],
+  ]],
+  ['Heads of Department', [
+    ['Lakshya Singhal', 'CSE', 'lakshya.singhal@lnmiit.ac.in'],
+    ['Kartik Mantri', 'ECE', 'kartik.mantri@lnmiit.ac.in'],
+    ['Dr. Anjali Verma', 'MTH', 'anjali.verma@lnmiit.ac.in'],
+    ['Dr. Rajesh Khanna', 'CCE', 'rajesh.khanna@lnmiit.ac.in'],
+    ['Dr. Suresh Patil', 'ME', 'suresh.patil@lnmiit.ac.in'],
+  ]],
+  ['Research office and management', [
+    ['Prayag Vijay', 'Research Administrator', 'prayag.vijay@lnmiit.ac.in'],
+    ['Pulkit Mittal', 'Research Administrator', 'pulkit.mittal@lnmiit.ac.in'],
+    ['Dr. Meenakshi Rao', 'Institute Management, Dean R&D', 'meenakshi.rao@lnmiit.ac.in'],
+  ]],
+  ['System administrator', [
+    ['Vikram Joshi', 'Users and roles', 'vikram.joshi@lnmiit.ac.in'],
+  ]],
 ];
 
 const form = document.getElementById('login-form');
@@ -33,11 +47,18 @@ try {
   }
 } catch { /* ignore */ }
 
-const tbody = document.getElementById('demo-accounts');
-tbody.innerHTML = DEMO.map(
-  ([name, role, email]) => `<tr data-email="${escapeHtml(email)}" tabindex="0"><td>${escapeHtml(name)}</td><td>${escapeHtml(role)}</td><td>${escapeHtml(email)}</td></tr>`
-).join('');
-tbody.querySelectorAll('tr').forEach((tr) => {
+const groups = document.getElementById('demo-accounts');
+groups.innerHTML = DEMO.map(([title, accounts]) => `
+  <section class="demo-group box">
+    <h3>${escapeHtml(title)}</h3>
+    <ul>${accounts.map(([name, detail, email]) => `
+      <li data-email="${escapeHtml(email)}" tabindex="0" role="button" title="${escapeHtml(email)}">
+        <span class="demo-name">${escapeHtml(name)}</span> <span class="muted">${escapeHtml(detail)}</span>
+        <span class="demo-email">${escapeHtml(email)}</span>
+      </li>`).join('')}
+    </ul>
+  </section>`).join('');
+groups.querySelectorAll('li[data-email]').forEach((tr) => {
   const fill = () => {
     emailEl.value = tr.dataset.email;
     passwordEl.value = 'demo123';

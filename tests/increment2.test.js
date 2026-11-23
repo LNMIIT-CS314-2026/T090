@@ -230,10 +230,13 @@ test('FR-004 / FR-009: system administrator creates users, changes roles, deacti
   assert.equal(s.auth.login('kavya.menon@lnmiit.ac.in', 'welcome-2026').user.role, 'RESEARCHER');
   assert.equal(codeOf(() => s.accounts.createUser(sys, { name: 'X', email: 'KAVYA.menon@lnmiit.ac.in', role: 'RESEARCHER', departmentId: 3, password: 'welcome-2026' })), 'VALIDATION_FAILED');
 
-  // Kavya becomes head of MTH (MTH has no head yet); a second head of CSE is refused.
+  // MTH already has an active head (Dr. Anjali Verma): a second one is refused. After she is
+  // deactivated, Kavya can become head of MTH.
+  assert.equal(codeOf(() => s.accounts.changeRole(sys, u.id, { role: 'HOD', departmentId: 3 })), 'INVALID_STATE');
+  const anjali = s.users.findUserByEmail('anjali.verma@lnmiit.ac.in');
+  s.accounts.setAccountStatus(sys, anjali.id, 'DEACTIVATED');
   assert.equal(s.accounts.changeRole(sys, u.id, { role: 'HOD', departmentId: 3 }).role, 'HOD');
   assert.equal(db.prepare('SELECT head_user_id AS h FROM departments WHERE code = ?').get('MTH').h, u.id);
-  assert.equal(codeOf(() => s.accounts.changeRole(sys, u.id, { role: 'HOD', departmentId: 1 })), 'INVALID_STATE');
 
   // A researcher with publications keeps the role; own account cannot be changed.
   assert.equal(codeOf(() => s.accounts.changeRole(sys, 1, { role: 'RESEARCH_ADMIN' })), 'INVALID_STATE');
@@ -249,7 +252,7 @@ test('FR-004 / FR-009: system administrator creates users, changes roles, deacti
   assert.ok(login(EMAILS.arjun));
 
   const actions = db.prepare("SELECT action FROM audit_logs WHERE target_id LIKE 'U-%' ORDER BY log_id").all().map((r) => r.action);
-  assert.deepEqual(actions, ['CREATE_USER', 'CHANGE_ROLE', 'DEACTIVATE', 'ACTIVATE']);
+  assert.deepEqual(actions, ['CREATE_USER', 'DEACTIVATE', 'CHANGE_ROLE', 'DEACTIVATE', 'ACTIVATE']);
   assert.equal(codeOf(() => s.accounts.listUsers(login(EMAILS.prayag))), 'ACCESS_DENIED');
 });
 

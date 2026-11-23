@@ -34,7 +34,9 @@ Notes:
 
 ## Demo accounts
 
-The password is **`demo123`** for every account. On the login page, clicking a row of the "Demo accounts" table fills in the form.
+The password is **`demo123`** for every account. On the login page the demo accounts are grouped in four columns (researchers, heads of department, research office and management, system administrator); clicking a name fills in the form.
+
+Departments: Computer Science & Engineering (CSE), Electronics & Communication Engineering (ECE), Mathematics (MTH), Computer & Communication Engineering (CCE) and Mechanical Engineering (ME), each with a Head of Department.
 
 | Name | Role | E-mail | What it demonstrates |
 |---|---|---|---|
@@ -46,6 +48,11 @@ The password is **`demo123`** for every account. On the login page, clicking a r
 | Dr. Neha Kulkarni | Researcher (ECE) | neha.kulkarni@lnmiit.ac.in | Second department in the queue filter |
 | Dr. Arjun Bhatt | Researcher (CSE) | arjun.bhatt@lnmiit.ac.in | Owner checks: cannot see or edit Dr. Sourabh's records |
 | Dr. Ritu Saxena | Researcher (MTH), **deactivated** | ritu.saxena@lnmiit.ac.in | Deactivated account cannot log in (BR-009) |
+| Dr. Priya Nair | Researcher (CCE) | priya.nair@lnmiit.ac.in | Three verified records in Computer & Communication Engineering (32 / 3 / 1) |
+| Dr. Vivek Chauhan | Researcher (ME) | vivek.chauhan@lnmiit.ac.in | Two verified records in Mechanical Engineering (19 / 2 / 1) |
+| Dr. Anjali Verma | Head of Department (MTH) | anjali.verma@lnmiit.ac.in | Mathematics dashboard only |
+| Dr. Rajesh Khanna | Head of Department (CCE) | rajesh.khanna@lnmiit.ac.in | CCE dashboard only |
+| Dr. Suresh Patil | Head of Department (ME) | suresh.patil@lnmiit.ac.in | Mechanical Engineering dashboard only |
 | Dr. Meenakshi Rao | Institute Management (Dean, R&D) | meenakshi.rao@lnmiit.ac.in | Institute dashboard, all department dashboards, comparison, accreditation reports (FR-030, FR-034) |
 | Vikram Joshi | System Administrator | vikram.joshi@lnmiit.ac.in | Users and roles: create accounts, change roles, deactivate (FR-004, FR-009) |
 

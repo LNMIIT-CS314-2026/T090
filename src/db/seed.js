@@ -57,8 +57,8 @@ function seed(db) {
     const CSE = users.insertDepartment({ name: 'Computer Science & Engineering', code: 'CSE' });
     const ECE = users.insertDepartment({ name: 'Electronics & Communication Engineering', code: 'ECE' });
     const MTH = users.insertDepartment({ name: 'Mathematics', code: 'MTH' });
-    users.insertDepartment({ name: 'Computer & Communication Engineering', code: 'CCE' });
-    users.insertDepartment({ name: 'Mechanical Engineering', code: 'ME' });
+    const CCE = users.insertDepartment({ name: 'Computer & Communication Engineering', code: 'CCE' });
+    const ME = users.insertDepartment({ name: 'Mechanical Engineering', code: 'ME' });
 
     const u = (name, email, role, departmentId, designation, accountStatus = 'ACTIVE') =>
       users.insertUser({ name, email, passwordHash: hash, role, departmentId, designation, accountStatus });
@@ -74,8 +74,18 @@ function seed(db) {
     // Second increment: institute-level roles (FR-030, FR-034, FR-004, FR-009).
     u('Dr. Meenakshi Rao', 'meenakshi.rao@lnmiit.ac.in', 'INSTITUTE_MGMT', null, 'Dean, Research & Development');
     u('Vikram Joshi', 'vikram.joshi@lnmiit.ac.in', 'SYSTEM_ADMIN', null, 'IT Services');
+    // Heads of the other departments, and one researcher each for CCE and ME (added after the
+    // first-increment accounts, so their user IDs stay the same).
+    const anjali = u('Dr. Anjali Verma', 'anjali.verma@lnmiit.ac.in', 'HOD', MTH, 'Professor and Head');
+    const rajesh = u('Dr. Rajesh Khanna', 'rajesh.khanna@lnmiit.ac.in', 'HOD', CCE, 'Professor and Head');
+    const suresh = u('Dr. Suresh Patil', 'suresh.patil@lnmiit.ac.in', 'HOD', ME, 'Professor and Head');
+    const priya = u('Dr. Priya Nair', 'priya.nair@lnmiit.ac.in', 'RESEARCHER', CCE, 'Assistant Professor');
+    const vivek = u('Dr. Vivek Chauhan', 'vivek.chauhan@lnmiit.ac.in', 'RESEARCHER', ME, 'Associate Professor');
     users.setDepartmentHead(CSE, lakshya);
     users.setDepartmentHead(ECE, kartik);
+    users.setDepartmentHead(MTH, anjali);
+    users.setDepartmentHead(CCE, rajesh);
+    users.setDepartmentHead(ME, suresh);
 
     // Researcher profiles (FR-006, FR-007).
     const profile = (id, researchAreas, phone) => {
@@ -86,6 +96,8 @@ function seed(db) {
     profile(arjun, 'Edge computing, recommender systems, information retrieval', '+91 141 2688 117');
     profile(neha, 'RF circuit design, antennas, 5G receivers', '+91 141 2688 214');
     profile(ritu, 'Spectral graph theory', null);
+    profile(priya, 'Wireless sensor networks, network security, IoT', '+91 141 2688 305');
+    profile(vivek, 'Additive manufacturing, composite materials, finite element analysis', '+91 141 2688 412');
 
     pubs.initSequence(LAST_SEEDED_NUMBER);
 
@@ -222,11 +234,47 @@ function seed(db) {
       decision: decide(prayag, 'VERIFIED', 38, 10, 6),
     });
 
+    // --- Dr. Priya Nair (CCE) ---
+    pub({
+      publicId: 'P-1005', owner: priya, title: 'Lightweight Key Management for IoT Sensor Networks', authors: 'P. Nair, S. Ghosh',
+      type: 'JOURNAL', venue: 'IEEE Internet of Things Journal', year: 2023, doi: '10.1109/JIOT.2023.1005', citations: 21,
+      created: at(45, 10, 0), submitted: at(44, 9, 30), opened: review(pulkit, 43, 11, 0),
+      decision: decide(pulkit, 'VERIFIED', 43, 11, 20),
+    });
+    pub({
+      publicId: 'P-1024', owner: priya, title: 'Energy-Efficient Routing in Multi-Hop Wireless Networks', authors: 'P. Nair, R. Khanna',
+      type: 'CONFERENCE', venue: 'IEEE WCNC', year: 2024, doi: '10.1109/WCNC.2024.1024', citations: 7,
+      created: at(37, 14, 0), submitted: at(36, 10, 15), opened: review(prayag, 34, 9, 40),
+      decision: decide(prayag, 'VERIFIED', 34, 9, 55),
+    });
+    pub({
+      publicId: 'P-1050', owner: priya, title: 'Detecting Spoofed Nodes with Graph Neural Networks', authors: 'P. Nair, A. Iyer',
+      type: 'JOURNAL', venue: 'Computer Networks', year: 2025, doi: '10.1016/j.comnet.2025.1050', citations: 4,
+      created: at(29, 11, 30), submitted: at(28, 9, 10), opened: review(prayag, 26, 15, 0),
+      decision: decide(prayag, 'VERIFIED', 26, 15, 12),
+    });
+
+    // --- Dr. Vivek Chauhan (ME) ---
+    pub({
+      publicId: 'P-0970', owner: vivek, title: 'Fatigue Behaviour of 3D-Printed Lattice Structures', authors: 'V. Chauhan, S. Patil',
+      type: 'JOURNAL', venue: 'Additive Manufacturing', year: 2023, doi: '10.1016/j.addma.2023.0970', citations: 16,
+      created: at(44, 15, 0), submitted: at(43, 10, 0), opened: review(pulkit, 42, 10, 30),
+      decision: decide(pulkit, 'VERIFIED', 42, 10, 45),
+    });
+    pub({
+      publicId: 'P-1036', owner: vivek, title: 'Finite Element Study of Natural-Fibre Composite Panels', authors: 'V. Chauhan, K. Bansal',
+      type: 'CONFERENCE', venue: 'ASME IMECE', year: 2024, doi: '10.1115/IMECE2024.1036', citations: 3,
+      created: at(36, 12, 20), submitted: at(35, 11, 0), opened: review(prayag, 33, 14, 10),
+      decision: decide(prayag, 'VERIFIED', 33, 14, 25),
+    });
+
     // --- impact metrics, computed with the real recompute(), dated at the triggering verification ---
     calculator.recompute(sourabh, 'P-1042', at(40, 10, 32));
     calculator.recompute(arjun, 'P-1060', at(30, 11, 13));
     calculator.recompute(neha, 'P-1031', at(28, 12, 35));
     calculator.recompute(ritu, 'P-0950', at(38, 10, 7));
+    calculator.recompute(priya, 'P-1050', at(26, 15, 13));
+    calculator.recompute(vivek, 'P-1036', at(33, 14, 26));
 
     // --- notifications (e-mails already sent) ---
     const note = (recipientId, type, message, publicationId, createdAt, readStatus = 'UNREAD') =>
