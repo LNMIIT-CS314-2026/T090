@@ -57,6 +57,8 @@ function seed(db) {
     const CSE = users.insertDepartment({ name: 'Computer Science & Engineering', code: 'CSE' });
     const ECE = users.insertDepartment({ name: 'Electronics & Communication Engineering', code: 'ECE' });
     const MTH = users.insertDepartment({ name: 'Mathematics', code: 'MTH' });
+    users.insertDepartment({ name: 'Computer & Communication Engineering', code: 'CCE' });
+    users.insertDepartment({ name: 'Mechanical Engineering', code: 'ME' });
 
     const u = (name, email, role, departmentId, designation, accountStatus = 'ACTIVE') =>
       users.insertUser({ name, email, passwordHash: hash, role, departmentId, designation, accountStatus });

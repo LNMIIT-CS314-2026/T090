@@ -6,7 +6,7 @@
 CREATE TABLE IF NOT EXISTS departments (
   department_id INTEGER PRIMARY KEY,
   name TEXT NOT NULL UNIQUE,
-  code TEXT NOT NULL UNIQUE,              -- CSE, ECE, MTH
+  code TEXT NOT NULL UNIQUE,              -- CSE, ECE, MTH, CCE, ME
   head_user_id INTEGER REFERENCES users(user_id)
 );
 
